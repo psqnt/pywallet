@@ -12,3 +12,4 @@ pywallet.egg-info
 pywallet.egg-info
 Icon
 /notes.txt
+venv/*
