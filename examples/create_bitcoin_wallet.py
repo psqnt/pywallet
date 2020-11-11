@@ -6,6 +6,6 @@ from pywallet import wallet
 seed = wallet.generate_mnemonic()
 
 # create bitcoin wallet
-w = wallet.create_wallet(network="BTC", seed=seed, children=1)
+w = wallet.create_wallet(network="testnet", seed=seed, children=1)
 
 print(w)
