@@ -1,9 +1,10 @@
+import re
+import six
+
 from functools import wraps
 import hashlib
 from hashlib import sha256
-import re
 
-import six
 
 if six.PY3:
     long = int

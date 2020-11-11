@@ -1,8 +1,9 @@
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from .bip32 import Wallet
-from .ethereum import (
+from .bitcoin import (
     HDPrivateKey, HDPublicKey, HDKey,
     PrivateKey, PublicKey, Signature
 )

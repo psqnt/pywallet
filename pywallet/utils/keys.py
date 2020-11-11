@@ -25,7 +25,23 @@ from .utils import memoize
 PublicPair = namedtuple("PublicPair", ["x", "y"])
 
 
-class Key(object):
+class KeyParseError(Exception):
+    pass
+
+
+class ChecksumException(Exception):
+    pass
+
+
+class IncompatibleNetworkException(Exception):
+    pass
+
+
+class InvalidChildException(Exception):
+    pass
+
+
+class Key:
     def __init__(self, network, compressed=False):
         """Construct a Key."""
         # Set network first because set_key needs it
@@ -366,10 +382,6 @@ class PublicKey(Key):
     __hash__ = Key.__hash__
 
 
-class KeyParseError(Exception):
-    pass
-
-
 def incompatible_network_exception_factory(
         network_name, expected_prefix, given_prefix):
     return IncompatibleNetworkException(
@@ -378,15 +390,3 @@ def incompatible_network_exception_factory(
             net_name=network_name,
             expected_prefix=expected_prefix,
             given_prefix=given_prefix))
-
-
-class ChecksumException(Exception):
-    pass
-
-
-class IncompatibleNetworkException(Exception):
-    pass
-
-
-class InvalidChildException(Exception):
-    pass

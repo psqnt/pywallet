@@ -28,26 +28,12 @@ from .utils import long_or_int
 from .utils import long_to_hex
 from .utils import memoize
 
-
 class Wallet(object):
-    """A BIP32 wallet is made up of Wallet nodes.
+    """
+    A BIP32 wallet is made up of Wallet nodes.
 
     A Private node contains both a public and private key, while a public
     node contains only a public key.
-
-    **WARNING**:
-
-    When creating a NEW wallet you MUST back up the private key. If
-    you don't then any coins sent to your address will be LOST FOREVER.
-
-    You need to save the private key somewhere. It is OK to just write
-    it down on a piece of paper! Don't share this key with anyone!
-
-    >>> my_wallet = Wallet.from_master_secret(
-    ...     key='correct horse battery staple')
-    >>> private = my_wallet.serialize(private=True)
-    >>> private  # doctest: +ELLIPSIS
-    u'xprv9s21ZrQH143K2mDJW8vDeFwbyDbFv868mM2Zr87rJSTj8q16Unkaq1pryiV...'
 
     If you want to use this wallet on your website to accept bitcoin or
     altcoin payments, you should first create a primary child.
@@ -65,19 +51,17 @@ class Wallet(object):
                  private_key=None,
                  public_pair=None,
                  public_key=None,
-                 network="bitcoin_testnet"):
+                 network="testnet"):
         """Construct a new BIP32 compliant wallet.
 
-        You probably don't want to use this init methd. Instead use one
+        You probably don't want to use this init method. Instead use one
         of the 'from_master_secret' or 'deserialize' cosntructors.
         """
-
         if (not (private_exponent or private_key) and
                 not (public_pair or public_key)):
             raise InsufficientKeyDataError(
                 "You must supply one of private_exponent or public_pair")
-
-        network = Wallet.get_network(network)
+        self.network = network
         self.private_key = None
         self.public_key = None
         if private_key:
@@ -131,7 +115,6 @@ class Wallet(object):
             else:
                 raise ValueError("parameter must be an int or long")
 
-        self.network = Wallet.get_network(network)
         self.depth = l(depth)
         if (isinstance(parent_fingerprint, six.string_types) or
                 isinstance(parent_fingerprint, six.binary_type)):
@@ -578,7 +561,7 @@ class Wallet(object):
                    network=network)
 
     @classmethod
-    def from_master_secret(cls, seed, network="bitcoin_testnet"):
+    def from_master_secret(cls, seed, network="testnet"):
         """Generate a new PrivateKey from a secret key.
 
         :param seed: The key to use to generate this wallet. It may be a long
@@ -637,40 +620,11 @@ class Wallet(object):
     @classmethod
     def get_network(self, network):
         # returns a network class object
-
         response = None
-        if network == "bitcoin_testnet" or network == "BTCTEST":
-            response = BitcoinTestNet
-        elif network == "bitcoin" or network == "BTC":
-            response = BitcoinMainNet
-        elif network == "dogecoin" or network == "DOGE":
-            response = DogecoinMainNet
-        elif network == "dogecoin_testnet" or network == "DOGETEST":
-            response = DogecoinTestNet
-        elif network == "litecoin" or network == "LTC":
-            response = LitecoinMainNet
-        elif network == "litecoin_testnet" or network == "LTCTEST":
-            response = LitecoinTestNet
-        elif network == "bitcoin_cash" or network == "BCH":
-            response = BitcoinCashMainNet
-        elif network == "bitcoin_gold" or network == "BTG":
-            response = BitcoinGoldMainNet
-        elif network == "dash" or network == "DASH":
-            response = DashMainNet
-        elif network == 'dash_testnet' or network == 'DASHTEST':
-            response = DashTestNet
-        elif network == 'omni' or network == 'OMNI':
-            response = OmniMainNet
-        elif network == 'omni_testnet' or network == 'OMNI_TESTNET':
-            response = OmniTestNet
-        elif network == 'feathercoin' or network == 'FTC':
-            response = FeathercoinMainNet
-        elif network == "qtum" or network == "QTUM":
-            response = QtumMainNet
-        elif network == 'qtum_testnet' or network == 'QTUMTEST':
-            response = QtumTestNet
-        else:
-            response = network
+        if network == "TESTNET" or network == "BTCTEST":
+            return BitcoinTestNet
+        elif network == "MAINNET" or network == "BTC":
+            return BitcoinMainNet
         return response
 
     @classmethod

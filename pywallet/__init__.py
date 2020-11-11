@@ -1,6 +1,5 @@
-from ._version import __version__
-
 __all__ = [
+    'bitcoin',
     'network',
     'wallet',
     'utils'
